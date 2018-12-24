@@ -20,7 +20,8 @@ namespace Examples
         static void Main(string[] args)
         {
             Stellar.Network.CurrentNetwork = network_passphrase;
-            string signUp,seedKey;
+            string signUp,seedKey,desSeedKey;
+            long transAmt;
             int accountOperation;
             Account myAccount;
             Console.WriteLine("Welcome to Setellar Network");
@@ -56,7 +57,12 @@ namespace Examples
                                 Console.WriteLine("\n Merge Account!!!");
                                 break;
                             case 5:
-                                Console.WriteLine("\n Send & Receive Money!!!");
+                                Console.WriteLine("\n Enter your Destination Address:");
+                                desSeedKey = Console.ReadLine();
+                                var desKeyPair = KeyPair.FromSeed(desSeedKey);
+                                Console.WriteLine("\n Enter your Transfer Amount:");
+                                transAmt =Convert.ToInt64(Console.ReadLine());
+                                Payment(myKeyPair, desKeyPair, transAmt);
                                 break;
                             case 6:
                                 Console.WriteLine("\n Send & Receive Money with MultiSignature!!!");
@@ -221,30 +227,30 @@ namespace Examples
 
         static void Payment(KeyPair from, KeyPair to, long amount)
         {
-            //Account source = new Account(from, GetSequence(from.Address));
+            Account source = new Account(from, GetSequenceNum(from.Address));
 
-            //// load asset
-            //Asset asset = new Asset();
+            // load asset
+            Asset asset = new Asset();
 
-            //var operation =
-            //    new PaymentOperation.Builder(to, asset, amount)
-            //    .SetSourceAccount(from)
-            //    .Build();
+            var operation =
+                new PaymentOperation.Builder(to, asset, amount)
+                .SetSourceAccount(from)
+                .Build();
 
-            //source.IncrementSequenceNumber();
+            source.IncrementSequenceNumber();
 
-            //Stellar.Transaction transaction =
-            //    new Stellar.Transaction.Builder(source)
-            //    .AddOperation(operation)
-            //    .Build();
+            Stellar.Transaction transaction =
+                new Stellar.Transaction.Builder(source)
+                .AddOperation(operation)
+                .Build();
 
-            //transaction.Sign(source.KeyPair);
+            transaction.Sign(source.KeyPair);
 
-            //var tx = transaction.ToEnvelopeXdrBase64();
+            var tx = transaction.ToEnvelopeXdrBase64();
 
-            //var response = PostResult(tx);
+            var response = PostResult(tx);
 
-            //Console.WriteLine(response.ReasonPhrase);
+            Console.WriteLine(response.ReasonPhrase);
         }
     }
 }
