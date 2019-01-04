@@ -62,7 +62,7 @@ namespace Examples
                                 var desKeyPair = KeyPair.FromSeed(desSeedKey);
                                 Console.WriteLine("\n Enter your Transfer Amount:");
                                 transAmt =Convert.ToInt64(Console.ReadLine());
-                                Payment(myKeyPair, desKeyPair, transAmt);
+                                Payment(myKeyPair, desKeyPair, transAmt * Stellar.One.Value);
                                 break;
                             case 6:
                                 Console.WriteLine("\n Send & Receive Money with MultiSignature!!!");

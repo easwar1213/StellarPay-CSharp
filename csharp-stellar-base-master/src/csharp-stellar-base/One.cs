@@ -8,11 +8,11 @@ namespace Stellar
 {
     public class One
     {
-        public static readonly int Value = 10000;
+        public static readonly int Value = 10000000;
 
         public static implicit operator double(One d)
         {
-            return 1.0;
+            return Value;
         }
 
         public static implicit operator long(One d)
