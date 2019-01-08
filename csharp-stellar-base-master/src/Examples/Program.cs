@@ -55,7 +55,7 @@ namespace Examples
                                 AccountDetails(myKeyPair.Address);
                                 break;
                             case 4:
-                                Console.WriteLine("\n Enter your Destination Address:");
+                                Console.WriteLine("\n Enter your Destination Address SeedKey:");
                                 desSeedKey = Console.ReadLine();
                                 var desKeyPaire = KeyPair.FromSeed(desSeedKey);
                                 Console.WriteLine("\n Enter your Transfer Amount:");
@@ -63,10 +63,10 @@ namespace Examples
                                 SimplePayment(myKeyPair, desKeyPaire, transAmt * Stellar.One.Value);
                                 break;
                             case 5:
-                                Console.WriteLine("\n Enter the Account to Merge Address:");
+                                Console.WriteLine("\n Enter the Account to Merge Account SeedKey:");
                                 desSeedKey = Console.ReadLine();
                                 var desSignKey = Signer.Ed25519PublicKey(KeyPair.FromSeed(desSeedKey));
-                                Console.WriteLine("\n Enter Weight:");
+                                Console.WriteLine("\n Enter Sign Weight:");
                                 uint signWgt = Convert.ToUInt32(Console.ReadLine());
                                 Console.WriteLine("\n Enter Master Weight:");
                                 uint masWgt = Convert.ToUInt32(Console.ReadLine());
@@ -79,7 +79,6 @@ namespace Examples
                                 //SetOptionsOperation(KeyPair inflationDestination, uint clearFlags, uint setFlags,
                                 //uint masterKeyWeight, uint lowThreshold, uint mediumThreshold, uint highThreshold, 
                                 //string homeDomain, Generated.SignerKey signer, uint signerWeight)
-                                //MergeAccount(myKeyPair, 0, 0, 1, 0, 2, 2, "aa", desKeyPairef, 1);
                                 MergeAccount(myKeyPair, masWgt, lowThreshold, medThreshold, highThreshold, desSignKey, signWgt);
                                 break;
                             case 6:
@@ -114,8 +113,6 @@ namespace Examples
                     Console.WriteLine("Invalid Answer!!!");
                 }
             } while (signUp.ToUpper() != "Y" && signUp.ToUpper()!="N");            
-
-            //Payment(myKeyPair, randomAccountKeyPair, 10 * Stellar.One.Value);
 
             // Wait for input to prevent the cmd window from closing
             Console.Read();
@@ -276,12 +273,7 @@ namespace Examples
         //static void MergeAccount(KeyPair from,uint clearflag,uint setflag,uint masterwgt,uint lowthreshold,uint mediumthreshold,uint highthreshold,string domain,Stellar.Generated.SignerKey to,uint wgt)
         static void MergeAccount(KeyPair from,uint masterwgt, uint lowthreshold, uint mediumthreshold, uint highthreshold, Stellar.Generated.SignerKey to, uint wgt)
         {
-            Account source = new Account(from, GetSequenceNum(from.Address));
-
-            //SetOptionsOperation(KeyPair inflationDestination, uint clearFlags, uint setFlags,
-            //                    uint masterKeyWeight, uint lowThreshold, uint mediumThreshold, uint highThreshold,
-            //                    string homeDomain, Generated.SignerKey signer, uint signerWeight)
-            //                    MergeAccount(myKeyPair, 0, 0, 1, 0, 2, 2, null, desKeyPair, 1);
+            Account source = new Account(from, GetSequenceNum(from.Address));            
 
             // load asset
             Asset asset = new Asset();
